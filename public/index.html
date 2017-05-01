@@ -6,17 +6,25 @@
 
 <body>
     <div class="container">
-        <input id="formula-bar" type="text" value="" />
-        <table id="sheet-current">
-            <thead>
-                <tr></tr>
-            </thead>
-            <tbody>
-                <tr>
-                </tr>
-            </tbody>
-        </table>
+        <div id="table-container">
+            <input id="formula-bar" type="text" value="" />
+            <table id="sheet-current">
+                <thead>
+                    <tr></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <input type='submit' id="addColumn" value="Add Column" />
     </div>
+    <input type='submit' id="addRow" value="Add Row" />
     <script src="js/bundle.js"></script>
 </body>
 
