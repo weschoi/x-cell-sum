@@ -41,7 +41,7 @@ describe('table-view', () => {
 
         });
     });
-    /*
+    /* 
     it('fills in values from the model', () => {
                 // set up the initial state
                 const model = new TableModel(3, 3);
