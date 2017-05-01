@@ -221,7 +221,7 @@ class TableView {
                 sum += parseInt(n, 10);
             };
         }
-        return sum;
+        return sum
     }
 
     // this function is callled anytime a cell is clicked

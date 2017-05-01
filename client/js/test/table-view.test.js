@@ -35,7 +35,7 @@ describe('table-view', () => {
             let frs = document.querySelectorAll('TFOOT TR');
             view.renderTableFooter();
 
-            // inspect the resulting action
+            //  inspect the resulting action
             expect(frs[1].cells[2].textContent).toBe('');
             console.log(frs[2]);
 
