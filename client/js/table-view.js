@@ -132,7 +132,6 @@ class TableView {
     return sum
   }
 
-  // this function is callled anytime a cell is clicked
   handleSheetClick(evt) {
     const col = evt.target.cellIndex;
     const row = evt.target.parentElement.rowIndex - 1;
