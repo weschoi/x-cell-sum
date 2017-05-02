@@ -121,9 +121,9 @@ class TableView {
   }
 
   sumColumn() {
-    var sum = 0;
-    for (var i = 0; i < this.model.numRows; i++) {
-      var n = this.model.getValue({ col: this.currentCellLocation.col, row: i });
+    let sum = 0;
+    for (let i = 0; i < this.model.numRows; i++) {
+      let n = this.model.getValue({ col: this.currentCellLocation.col, row: i });
 
       if (n !== undefined && n != '') {
         sum += parseInt(n, 10);
