@@ -108,7 +108,6 @@ class TableView {
 
   handleAddRow() {
     this.model.numRows++;
-    //this.renderTable();
     this.renderTableBodyAfterAddRow();
   }
 
@@ -123,7 +122,6 @@ class TableView {
 
     fragment.appendChild(tr);
 
-    //removeChildren(this.sheetBodyEl);
     this.sheetBodyEl.appendChild(fragment);
   }
 
