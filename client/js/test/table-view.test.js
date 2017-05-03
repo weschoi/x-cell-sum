@@ -12,34 +12,91 @@ describe('table-view', () => {
   });
 
   describe('footer sum', () => {
-    it('returns the sum of all numbers in the same column', () => {
+    it('returns the sum of positive numbers', () => {
       // set up the initial state
       const model = new TableModel(3, 3);
       const view = new TableView(model);
-      model.setValue({ col: 1, row: 1 }, '1');
-      model.setValue({ col: 1, row: 2 }, '2');
-      model.setValue({ col: 1, row: 3 }, '3');
-      model.setValue({ col: 2, row: 1 }, '4');
-      model.setValue({ col: 2, row: 2 }, '5');
-      model.setValue({ col: 2, row: 3 }, '6');
-      model.setValue({ col: 3, row: 1 }, '7');
-      model.setValue({ col: 3, row: 2 }, '8');
-      model.setValue({ col: 3, row: 3 }, '8');
       view.init();
 
-      // inspect the initial state
-      let trs = document.querySelectorAll('TBODY TR');
-      expect(trs[1].cells[2].textContent).toBe('4');
+      // inspect initial state
+      let footerRow = document.querySelector('TFOOT TR');
+      expect(footerRow.cells[1].textContent).toBe('');
 
       // simulate user action
-      let frs = document.querySelectorAll('TFOOT TR');
+      model.setValue({ col: 1, row: 0 }, '2');
+      model.setValue({ col: 1, row: 1 }, '3');
+      model.setValue({ col: 1, row: 2 }, '5');
+
+      view.renderTableBody();
       view.renderTableFooter();
 
-      //  inspect the resulting action
-      expect(frs[1].cells[2].textContent).toBe('');
-      console.log(frs[2]);
+      // inspect the resulting action
+      let rows = document.querySelectorAll('TBODY TR');
+      expect(rows[1].cells[1].textContent).toBe('3');
+      view.renderTableFooter();
+
+      const footerCells = document.querySelectorAll('TFOOT TD');
+      expect(footerCells[1].textContent).toBe('10');
 
     });
+
+    it('returns the sum of negative numbers', () => {
+      // set up the initial state
+      const model = new TableModel(3, 3);
+      const view = new TableView(model);
+      view.init();
+
+      // inspect initial state
+      let footerRow = document.querySelector('TFOOT TR');
+      expect(footerRow.cells[1].textContent).toBe('');
+
+      // simulate user action
+      model.setValue({ col: 1, row: 0 }, '-2');
+      model.setValue({ col: 1, row: 1 }, '-3');
+      model.setValue({ col: 1, row: 2 }, '-5');
+
+      view.renderTableBody();
+      view.renderTableFooter();
+
+      // inspect the resulting action
+      let rows = document.querySelectorAll('TBODY TR');
+      expect(rows[1].cells[1].textContent).toBe('-3');
+      view.renderTableFooter();
+
+      const footerCells = document.querySelectorAll('TFOOT TD');
+      expect(footerCells[1].textContent).toBe('-10');
+
+    });
+
+    it('returns the sum of strings and numbers', () => {
+      // set up the initial state
+      const model = new TableModel(3, 3);
+      const view = new TableView(model);
+      view.init();
+
+      // inspect initial state
+      let footerRow = document.querySelector('TFOOT TR');
+      expect(footerRow.cells[1].textContent).toBe('');
+
+      // simulate user action
+      model.setValue({ col: 1, row: 0 }, '-2');
+      model.setValue({ col: 1, row: 1 }, '3');
+      model.setValue({ col: 1, row: 2 }, 'hack-reactor');
+
+      view.renderTableBody();
+      view.renderTableFooter();
+
+      // inspect the resulting action
+      let rows = document.querySelectorAll('TBODY TR');
+      expect(rows[1].cells[1].textContent).toBe('3');
+      view.renderTableFooter();
+
+      const footerCells = document.querySelectorAll('TFOOT TD');
+      expect(footerCells[1].textContent).toBe('1');
+
+    });
+
+
   });
 
   describe('formula bar', () => {

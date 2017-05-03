@@ -80,14 +80,17 @@ class TableView {
   }
 
   renderTableFooter() {
-    // clear footer row
     removeChildren(this.footerRowEl);
-    // build elements
     for (let col = 0; col < this.model.numCols; col++) {
-      const position = { col: col, row: this.model.numRows };
-      const value = this.model.getValue(position);
-      const td = createTD(value);
-      this.footerRowEl.appendChild(td);
+      let columnSum = 0;
+      for (let row = 0; row < this.model.numRows; row++) {
+        const position = { col: col, row: row };
+        const value = parseInt(this.model.getValue(position));
+        if (!isNaN(value)) {
+          columnSum += value;
+        }
+      }
+      this.footerRowEl.appendChild(createTD(columnSum));
     }
   }
 
@@ -105,8 +108,26 @@ class TableView {
 
   handleAddRow() {
     this.model.numRows++;
-    this.renderTable();
+    //this.renderTable();
+    this.renderTableBodyAfterAddRow();
   }
+
+  renderTableBodyAfterAddRow() {
+    const fragment = document.createDocumentFragment();
+
+    const tr = createTR();
+    for (let col = 0; col < this.model.numCols; col++) {
+      const td = createTD('');
+      tr.appendChild(td);
+    }
+
+    fragment.appendChild(tr);
+
+    //removeChildren(this.sheetBodyEl);
+    this.sheetBodyEl.appendChild(fragment);
+  }
+
+
 
   handleFormulaBarChange(evt) {
     const value = this.formulaBarEl.value;
@@ -124,11 +145,11 @@ class TableView {
     let sum = 0;
     for (let i = 0; i < this.model.numRows; i++) {
       var num = this.model.getValue({ col: this.currentCellLocation.col, row: i });
-      
-    
+
+
       if (num !== undefined && num != '' && !(!+num)) {
         sum += parseInt(num, 10);
-      } 
+      }
     }
     return sum
   }
