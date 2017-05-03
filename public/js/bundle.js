@@ -74,25 +74,6 @@ class TableModel {
 }
 
 module.exports = TableModel;
-
-// Trying to understand this
-/*
-const model = new TableModel();
-const location = { row: 3, col: 5 };
-
-
-const trial = model._getCellId(location);
-
-console.log(trial);
-
-
-console.log(model.getValue(location));
-model.setValue(location, 'foo');
-console.log(model.getValue(location));
-console.log(model.data[trial] === 'foo');
-console.log(model.data[5:3]==='foo');
-*/
-
 },{}],5:[function(require,module,exports){
 const { getLetterRange } = require('./array-util');
 const { removeChildren, createTH, createTR, createTD } = require('./dom-util');
@@ -176,14 +157,17 @@ class TableView {
   }
 
   renderTableFooter() {
-    // clear header row
     removeChildren(this.footerRowEl);
-    // get letters and build elements
     for (let col = 0; col < this.model.numCols; col++) {
-      const position = { col: col, row: this.model.numRows };
-      const value = this.model.getValue(position);
-      const td = createTD(value);
-      this.footerRowEl.appendChild(td);
+      let columnSum = 0;
+      for (let row = 0; row < this.model.numRows; row++) {
+        const position = { col: col, row: row };
+        const value = parseInt(this.model.getValue(position));
+        if (!isNaN(value)) {
+          columnSum += value;
+        }
+      }
+      this.footerRowEl.appendChild(createTD(columnSum));
     }
   }
 
@@ -201,8 +185,26 @@ class TableView {
 
   handleAddRow() {
     this.model.numRows++;
-    this.renderTable();
+    //this.renderTable();
+    this.renderTableBodyAfterAddRow();
   }
+
+  renderTableBodyAfterAddRow() {
+    const fragment = document.createDocumentFragment();
+
+    const tr = createTR();
+    for (let col = 0; col < this.model.numCols; col++) {
+      const td = createTD('');
+      tr.appendChild(td);
+    }
+
+    fragment.appendChild(tr);
+
+    //removeChildren(this.sheetBodyEl);
+    this.sheetBodyEl.appendChild(fragment);
+  }
+
+
 
   handleFormulaBarChange(evt) {
     const value = this.formulaBarEl.value;
@@ -217,18 +219,18 @@ class TableView {
   }
 
   sumColumn() {
-    var sum = 0;
-    for (var i = 0; i < this.model.numRows; i++) {
-      var n = this.model.getValue({ col: this.currentCellLocation.col, row: i });
+    let sum = 0;
+    for (let i = 0; i < this.model.numRows; i++) {
+      var num = this.model.getValue({ col: this.currentCellLocation.col, row: i });
 
-      if (n !== undefined && n != '') {
-        sum += parseInt(n, 10);
-      };
+
+      if (num !== undefined && num != '' && !(!+num)) {
+        sum += parseInt(num, 10);
+      }
     }
     return sum
   }
 
-  // this function is callled anytime a cell is clicked
   handleSheetClick(evt) {
     const col = evt.target.cellIndex;
     const row = evt.target.parentElement.rowIndex - 1;
