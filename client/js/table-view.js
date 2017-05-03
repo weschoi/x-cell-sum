@@ -80,9 +80,9 @@ class TableView {
   }
 
   renderTableFooter() {
-    // clear header row
+    // clear footer row
     removeChildren(this.footerRowEl);
-    // get letters and build elements
+    // build elements
     for (let col = 0; col < this.model.numCols; col++) {
       const position = { col: col, row: this.model.numRows };
       const value = this.model.getValue(position);
@@ -123,11 +123,12 @@ class TableView {
   sumColumn() {
     let sum = 0;
     for (let i = 0; i < this.model.numRows; i++) {
-      let n = this.model.getValue({ col: this.currentCellLocation.col, row: i });
-
-      if (n !== undefined && n != '') {
-        sum += parseInt(n, 10);
-      };
+      var num = this.model.getValue({ col: this.currentCellLocation.col, row: i });
+      
+    
+      if (num !== undefined && num != '' && !(!+num)) {
+        sum += parseInt(num, 10);
+      } 
     }
     return sum
   }
