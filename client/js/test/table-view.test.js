@@ -96,7 +96,6 @@ describe('table-view', () => {
 
     });
 
-
   });
 
   describe('formula bar', () => {
@@ -118,7 +117,8 @@ describe('table-view', () => {
       // inspect the resulting action
       trs = document.querySelectorAll('TBODY TR');
       expect(trs[0].cells[0].textContent).toBe('65');
-    })
+    });
+
     it('updates FROM the value of the current cell', () => {
       // set up the initial state
       const model = new TableModel(3, 3);
@@ -136,8 +136,8 @@ describe('table-view', () => {
 
       // inspect the resulting state
       expect(formulaBarEl.value).toBe('123');
-    })
-  })
+    });
+  });
 
   describe('table body', () => {
     it('highlights the current cell when clicked', () => {
@@ -183,8 +183,9 @@ describe('table-view', () => {
       // inspect the initial state
       const trs = document.querySelectorAll('TBODY TR');
       expect(trs[1].cells[2].textContent).toBe('123');
-    })
-  })
+    });
+
+  });
 
   describe('table header', () => {
     it('has valid column header lablels', () => {
@@ -201,6 +202,7 @@ describe('table-view', () => {
 
       let labelTexts = Array.from(ths).map(el => el.textContent);
       expect(labelTexts).toEqual(["A", "B", "C", "D", "E", "F"]);
-    })
-  })
-})
+    });
+
+  });
+});

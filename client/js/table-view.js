@@ -55,7 +55,7 @@ class TableView {
 
   isCurrentCell(col, row) {
     return this.currentCellLocation.row === row &&
-      this.currentCellLocation.col === col;
+           this.currentCellLocation.col === col;
   }
 
   renderTableBody() {
@@ -94,6 +94,18 @@ class TableView {
     }
   }
 
+  sumColumn() {
+    let columnSum = 0;
+    for (let row = 0; row < this.model.numRows; row++) {
+      let value = this.model.getValue({ col: this.currentCellLocation.col, row: row });
+
+      if (value !== undefined && value != '' && !isNaN(value)) {
+        columnSum += parseInt(value, 10);
+      }
+    }
+    return columnSum
+  }
+
   attachEventHandlers() {
     this.sheetBodyEl.addEventListener('click', this.handleSheetClick.bind(this));
     this.formulaBarEl.addEventListener('keyup', this.handleFormulaBarChange.bind(this));
@@ -125,8 +137,6 @@ class TableView {
     this.sheetBodyEl.appendChild(fragment);
   }
 
-
-
   handleFormulaBarChange(evt) {
     const value = this.formulaBarEl.value;
     this.model.setValue(this.currentCellLocation, value);
@@ -137,19 +147,6 @@ class TableView {
 
   getFooterCellLocation() {
     return { col: this.currentCellLocation.col, row: this.model.numRows };
-  }
-
-  sumColumn() {
-    let sum = 0;
-    for (let i = 0; i < this.model.numRows; i++) {
-      var num = this.model.getValue({ col: this.currentCellLocation.col, row: i });
-
-
-      if (num !== undefined && num != '' && !(!+num)) {
-        sum += parseInt(num, 10);
-      }
-    }
-    return sum
   }
 
   handleSheetClick(evt) {
